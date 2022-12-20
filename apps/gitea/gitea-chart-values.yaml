@@ -26,6 +26,7 @@ gitea:
   admin:
     existingSecret: gitea-admin-user
 
+# To enable SSH Access: https://blog.b1-systems.de/forwarding-ssh-traffic-inside-kubernetes-using-traefik
 ingress:
   enabled: true
   annotations:

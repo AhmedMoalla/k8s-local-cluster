@@ -1,0 +1,16 @@
+ingress:
+  enabled: true
+  annotations:
+    cert-manager.io/cluster-issuer: "vault-issuer"
+  tls:
+    - hosts:
+        - pgadmin.home.com
+      secretName: pgadmin-tls
+  hosts:
+    - host: pgadmin.home.com
+      paths:
+        - path: /
+          pathType: Prefix
+persistentVolume:
+  size: 200Mi
+  storageClass: longhorn

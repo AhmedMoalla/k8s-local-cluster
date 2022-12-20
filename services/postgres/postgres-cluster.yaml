@@ -1,0 +1,38 @@
+apiVersion: "acid.zalan.do/v1"
+kind: "postgresql"
+metadata:
+  name: "acid-postgres"
+  namespace: "default"
+  labels:
+    team: acid
+spec:
+  teamId: "acid"
+  postgresql:
+    version: "14"
+  numberOfInstances: 1
+  volume:
+    size: "1Gi"
+    storageClass: longhorn
+  users:
+    giteadb-admin: []
+  databases:
+    giteadb: giteadb-admin
+  patroni:
+    pg_hba:
+      - local   all             all                                   trust
+      - hostssl all             +zalandos    127.0.0.1/32       pam
+      - host    all             all                127.0.0.1/32       md5
+      - hostssl all             +zalandos    ::1/128            pam
+      - host    all             all                ::1/128            md5
+      - local   replication     standby                    trust
+      - hostssl replication     standby all                md5
+      - hostnossl all           all                all                trust # Trust all non tls connection  (By default it's reject)
+      - hostssl all             +zalandos    all                pam
+      - hostssl all             all                all                md5
+  resources:
+    requests:
+      cpu: 100m
+      memory: 100Mi
+    limits:
+      cpu: 500m
+      memory: 500Mi

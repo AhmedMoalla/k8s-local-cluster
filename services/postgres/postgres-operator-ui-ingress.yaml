@@ -1,0 +1,22 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: postgres-operator-ui
+  annotations:
+    cert-manager.io/cluster-issuer: "vault-issuer"
+spec:
+  tls:
+    - hosts:
+        - pg-operator.home.com
+      secretName: pg-operator-tls
+  rules:
+    - host: pg-operator.home.com
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: postgres-operator-ui
+                port:
+                  number: 80

@@ -1,0 +1,23 @@
+server:
+  ingress:
+    enabled: false
+    ingressClassName: ""
+    annotations:
+      cert-manager.io/cluster-issuer: "vault-issuer"
+    tls:
+      - hosts:
+          - vault.home.com
+        secretName: vault-tls
+    hosts:
+      - host: vault.home.com
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: vault
+                port:
+                  number: 8200
+  dataStorage:
+    size: 500Mi
+    storageClass: longhorn

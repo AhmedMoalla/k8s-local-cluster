@@ -1,0 +1,48 @@
+gitea:
+  additionalConfigFromEnvs:
+    - name: ENV_TO_INI__DATABASE__DB_TYPE
+      value: postgres
+    - name: ENV_TO_INI__DATABASE__HOST
+      value: acid-postgres:5432
+    - name: ENV_TO_INI__DATABASE__NAME
+      value: giteadb
+    - name: ENV_TO_INI__DATABASE__SCHEMA
+      value: public
+    - name: ENV_TO_INI__DATABASE__USER
+      valueFrom:
+        secretKeyRef:
+          name: giteadb-admin.acid-postgres.credentials.postgresql.acid.zalan.do
+          key: username
+    - name: ENV_TO_INI__DATABASE__PASSWD
+      valueFrom:
+        secretKeyRef:
+          name: giteadb-admin.acid-postgres.credentials.postgresql.acid.zalan.do
+          key: password
+  config:
+    server:
+      SSH_DOMAIN: git.home.com
+      ROOT_URL: https://git.home.com
+      DOMAIN: git.home.com
+  admin:
+    existingSecret: gitea-admin-user
+
+ingress:
+  enabled: true
+  annotations:
+    cert-manager.io/cluster-issuer: "vault-issuer"
+  tls:
+    - hosts:
+        - git.home.com
+      secretName: git-tls
+  className: ""
+  hosts:
+    - host: git.home.com
+      paths:
+        - path: /
+          pathType: Prefix
+
+postgresql:
+  enabled: false
+
+global:
+  storageClass: longhorn

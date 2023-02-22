@@ -14,9 +14,11 @@ spec:
     size: "1Gi"
     storageClass: longhorn
   users:
+    keycloakdb-admin: []
     giteadb-admin: []
   databases:
     giteadb: giteadb-admin
+    keycloakdb: keycloakdb-admin
   patroni:
     pg_hba:
       - local   all             all                                   trust

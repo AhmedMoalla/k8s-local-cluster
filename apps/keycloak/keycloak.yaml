@@ -1,0 +1,21 @@
+apiVersion: k8s.keycloak.org/v2alpha1
+kind: Keycloak
+metadata:
+  name: keycloak
+spec:
+  instances: 1
+  db:
+    vendor: postgres
+    url: jdbc:postgresql://acid-postgres:5432/keycloakdb
+    usernameSecret:
+      name: keycloakdb-admin.acid-postgres.credentials.postgresql.acid.zalan.do
+      key: username
+    passwordSecret:
+      name: keycloakdb-admin.acid-postgres.credentials.postgresql.acid.zalan.do
+      key: password
+  hostname:
+    hostname: keycloak.home.com
+  ingress:
+    enabled: false
+  http:
+    httpEnabled: true
